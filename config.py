@@ -5,6 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 debug_enabled = True
 host = "0.0.0.0"
 port = 8080
+folder_static = "app/static"
 
 prod_name = "Security Standard Manager"
 database_name = "SSM"

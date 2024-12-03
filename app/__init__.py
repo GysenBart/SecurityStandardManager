@@ -4,10 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_admin.contrib.sqla import ModelView
 from flask_migrate import Migrate
 
-from config import Config, prod_name, debug_enabled
+from config import Config, prod_name, debug_enabled, folder_static
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, static_folder=folder_static)
 
 # Configure the database (SQLite for simplicity)
 app.config.from_object(Config)
