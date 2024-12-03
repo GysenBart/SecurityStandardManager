@@ -17,6 +17,9 @@ migrate = Migrate(app, db)
 # Initialize Flask-Admin
 admin = Admin(app, name=prod_name, template_mode='bootstrap4')
 
-from app.models import User
+from app import routes
+from app.models import User, standards
+
 # Add views
 admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(standards, db.session))
