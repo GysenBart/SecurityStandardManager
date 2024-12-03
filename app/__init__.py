@@ -2,18 +2,21 @@ from flask import Flask
 from flask_admin import Admin
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin.contrib.sqla import ModelView
-from app import models
+from flask_migrate import Migrate
+
+from config import Config, prod_name, debug_enabled
 
 # Initialize Flask app
 app = Flask(__name__)
 
 # Configure the database (SQLite for simplicity)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_object(Config)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # Initialize Flask-Admin
-admin = Admin(app, name='My Admin Panel', template_mode='bootstrap4')
+admin = Admin(app, name=prod_name, template_mode='bootstrap4')
 
+from app.models import User
 # Add views
-admin.add_view(ModelView(models.User, db.session))
+admin.add_view(ModelView(User, db.session))
