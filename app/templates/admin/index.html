@@ -1,0 +1,9 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+    <div class="container">
+        <form action="{{ button_url }}" method="post" style="margin-bottom: 20px;">
+            <button type="submit" class="btn btn-primary">Update standards</button>
+        </form>
+        {{ super() }}
+    </div>
+{% endblock %}
