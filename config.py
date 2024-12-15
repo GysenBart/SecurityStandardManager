@@ -2,6 +2,10 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+repo_folder = os.path.join(basedir, "SCF_files")
+
+repo_url = "https://github.com/securecontrolsframework/securecontrolsframework.git"
+
 debug_enabled = True
 host = "0.0.0.0"
 port = 8080
@@ -23,3 +27,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = os.path.join(basedir,"tempdownloads")
     SECRET_KEY = "testkey"
+    
