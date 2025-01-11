@@ -19,12 +19,11 @@ database_host = "postgres"
 database_port = 5432
 
 class Config(object):
-    # ...
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     #SQLALCHEMY_DATABASE_URI = 'postgresql://'+str(database_user) +':'+str(database_pwd)+'@'+str(database_host)+':'+str(database_port)+'/' + str(database_name)
-    #SQLALCHEMY_DATABASE_URI = 'sqlite:///'+ os.path.join(basedir, 'app.db')
     FLASK_ADMIN_SWATCH = "darkly"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = os.path.join(basedir,"tempdownloads")
     SECRET_KEY = "testkey"
+    SCEDULER_API_ENABLED = True
     

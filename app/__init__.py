@@ -3,6 +3,7 @@ from flask_admin import Admin
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin.contrib.sqla import ModelView
 from flask_migrate import Migrate
+from flask_apscheduler import APScheduler
 
 from config import Config, prod_name, debug_enabled, folder_static
 
@@ -13,6 +14,7 @@ app = Flask(__name__, static_folder=folder_static)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+scheduler = APScheduler(app)
 
 # Initialize Flask-Admin
 

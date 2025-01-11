@@ -5,7 +5,7 @@ from git import Repo
 from config import repo_folder, repo_url
 from subprocess import run
 from app import scheduler
-import schedule
+
 
 def clone_repo():
     try:
@@ -42,15 +42,7 @@ def check_and_clone():
     else:
         print(f"Repository not found locally. Cloning the repo...")
         clone_repo()
-
-# Can be removed if flask scheduler is used        
-def run_cloning_repo():
-    check_and_clone()
-    schedule.every().day.at("00:00").do(check_and_clone)
-    
-    while True:
-        schedule.run_pending()
-        time.sleep(3600) # wait one hour before checking again
+        
         
 @scheduler.task('cron', day_of_week='mon', hour=4)
 def weekly_task():
