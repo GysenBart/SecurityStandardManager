@@ -2,7 +2,7 @@ import datetime
 from app import db
 from flask import url_for
 from flask_admin import expose, AdminIndexView, expose
-from sqlalchemy import Table, Column, Integer, String, Metadata, Text
+import sqlalchemy as sa #import Table, Column, Integer, String, Metadata, Text
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
@@ -52,7 +52,7 @@ class Clausule(db.Model):
 class ClausuleComment(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     #dsc_id = db.Column(UUID(as_uuid=True), db.ForeignKey(''))
-    clausule_id = db.Column(UUID(as_uuid=True), db.ForeignKey('clausule.id'))
+    clausule_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(Clausule.id, name='fk_ClausuleComment_clausule_id', nullable=False))
     comment = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -61,15 +61,18 @@ class ClausuleComment(db.Model):
     
 class DomainStandardClausule(db.model):
     # create all the relationships here
+    # add nullable if needed
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    domain_id = db.Column(UUID(as_uuid=True), db.ForeignKey('security_domain.id'))
-    standard_id = db.Column(UUID(as_uuid=True), db.ForeignKey('security_standard.id'))
-    clausule_id = db.Column(UUID(as_uuid=True), db.ForeignKey('clausule.id'))
+    domain_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityDomains.id, name='fk_DomainStandardClausule_securityDomains_id'))
+    control_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityControls.id, name='fk_DomainStandardClausule_securityControls_id'))
+    standard_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityStandards.id, name='fk_DomainStandardClausule_securityStandards_id'))
+    clausule_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(Clausule.id, name='fk_DomainStandardClausule_clausule_id'))
     version = db.Column(db.String(10))
     start_date = db.Column(db.DateTime, default=datetime.utcnow)
     end_date = db.Column(db.DateTime)
     
     domain = db.relationship('SecurityDomain')
+    control = db.relationship('SecurityControl')
     standard = db.relationship('SecurityStandard')
     clausule = db.relationship('Clausule')
     
