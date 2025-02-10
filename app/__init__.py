@@ -14,17 +14,18 @@ app = Flask(__name__, static_folder=folder_static)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-scheduler = APScheduler(app)
+scheduler = APScheduler()
+scheduler.init_app(app)
 
 # Initialize Flask-Admin
 
 admin = Admin(app, name=prod_name, template_mode='bootstrap3')
 
 from app import routes
-from app.models import User, standards
+from app.models import User, DomainStandardClausule
 
 # Add views
 admin.add_view(ModelView(User, db.session, category="Test"))
-admin.add_view(ModelView(standards, db.session, category="Test"))
+admin.add_view(ModelView(DomainStandardClausule, db.session, category="Test"))
 #admin.add_view(ModelView(clausules, db.session, category="Test"))
 #admin.add_view(CustomActionView(name="Custom Action", endpoint="custom_action"))
