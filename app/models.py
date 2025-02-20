@@ -7,7 +7,6 @@ from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
 
-# Define a simple model - can be removed later
 class User(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(50))
@@ -51,7 +50,7 @@ class Clausule(db.Model):
     
 class ClausuleComment(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    #dsc_id = db.Column(UUID(as_uuid=True), db.ForeignKey(''))
+    #dsc_id = db.Column(UUID(as_uuid=True), db.ForeignKey('fk_ClausuleComment_domainStandardClausule'), nullable=False)
     clausule_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(Clausule.id, name='fk_ClausuleComment_clausule_id'), nullable=False)
     comment = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
@@ -62,8 +61,9 @@ class ClausuleComment(db.Model):
 
 # Tis model is used to make 
 class DomainStandardClausule(db.Model):
-    # add nullable if needed
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    
+    ############# ask for nullable #############
     domain_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityDomains.id, name='fk_DomainStandardClausule_securityDomains_id'))
     control_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityControls.id, name='fk_DomainStandardClausule_securityControls_id'))
     standard_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityStandards.id, name='fk_DomainStandardClausule_securityStandards_id'))
@@ -72,7 +72,7 @@ class DomainStandardClausule(db.Model):
     start_date = db.Column(db.DateTime, default=datetime.now)
     end_date = db.Column(db.DateTime)
     
-    # Only needed for back population when we need a many to many relationship
+    # Only needed for back population when we need a many to many relationship, i think this is not necesary in this case
     #domain = db.relationship('SecurityDomain')
     #control = db.relationship('SecurityControl')
     #standard = db.relationship('SecurityStandard')

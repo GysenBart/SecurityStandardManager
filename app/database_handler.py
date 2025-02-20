@@ -2,7 +2,7 @@ from datetime import datetime
 import fnmatch
 import pandas as pd
 from app import db, app
-from models import SecurityDomains, SecurityControls, SecurityStandards, Clausule, DomainStandardClausule
+from app.models import SecurityDomains, SecurityStandards, Clausule, DomainStandardClausule #, SecurityControls
 
 excel_path = "SCF_files/Secure Controls Framework (SCF) - 2024.4.xlsx"
 
@@ -34,14 +34,14 @@ def proces_excel_data():
     with app.app_context():
         for index, row in df.iterrows():
             # Create or get domain
-            domain = SecurityDomains.query.filter_by(name=row['Domain']).first()
+            domain = SecurityDomains.query.filter_by(name=row['SCF Domain']).first()
             if not domain:
-                domain = SecurityDomains(name=row['Domain'])
+                domain = SecurityDomains(name=row['SCF Domain'])
                 db.session.add(domain)
             
             # Process each standard column
             for column in df.columns:
-                if column != 'Domain':
+                if column != 'SCF Domain':
                     # Create or get standard
                     standard = SecurityStandards.query.filter_by(name=column).first()
                     if not standard:
