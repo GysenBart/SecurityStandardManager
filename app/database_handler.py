@@ -1,10 +1,11 @@
 from datetime import datetime
 import fnmatch
 import pandas as pd
+from config import excel_path
 from app import db, app
 from app.models import SecurityDomains, SecurityStandards, Clausule, DomainStandardClausule #, SecurityControls
 
-excel_path = "SCF_files/Secure Controls Framework (SCF) - 2024.4.xlsx"
+
 
 def find_matching_sheet(file_path, pattern):
     # Load the Excel file
@@ -27,9 +28,9 @@ def read_scf_tab(path):
     
     return df
 
-def proces_excel_data():
+def proces_excel_data(path):
     
-    df = read_scf_tab(excel_path)
+    df = read_scf_tab(path)
     
     with app.app_context():
         for index, row in df.iterrows():
