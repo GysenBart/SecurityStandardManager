@@ -50,7 +50,7 @@ class Clausule(db.Model):
         return f"{self.number} - {self.description[:50]}..."
     
 
-# Tis model is used to make 
+# This model is used to make relationships
 class DomainStandardClausule(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     
