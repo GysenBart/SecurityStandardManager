@@ -1,0 +1,14 @@
+* auto pull -> Update? -> notification! by email/slack?
+* define standards columns 
+
+- load standaarden
+- load domains
+- loop through rows
+    - get meta data
+    - insert into database
+    - per standard
+        - load field with clausules
+        - insert into database per clause
+            - linked to standard?
+        
+        - link it all together

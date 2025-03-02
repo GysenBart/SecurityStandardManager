@@ -35,28 +35,19 @@ class SecurityStandards(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(50))
     description = db.Column(db.Text)
-    
     def __str__(self):
         return self.name
     
 class Clausule(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(50))
-    description = db.Column(db.Text)
+    title = db.Column(db.Text) # filled by user
+    description = db.Column(db.Text) # filled by user
     created_at = db.Column(db.DateTime, default=datetime.now)
+    standard_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityStandards.id, name='fk_DomainStandardClausule_securityStandards_id'))
     
     def __str__(self):
         return f"{self.number} - {self.description[:50]}..."
-    
-class ClausuleComment(db.Model):
-    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    #dsc_id = db.Column(UUID(as_uuid=True), db.ForeignKey('fk_ClausuleComment_domainStandardClausule'), nullable=False)
-    clausule_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(Clausule.id, name='fk_ClausuleComment_clausule_id'), nullable=False)
-    comment = db.Column(db.Text)
-    created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    
-    #clausule = db.relationship('Clausule')
     
 
 # Tis model is used to make 
