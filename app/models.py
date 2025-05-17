@@ -5,6 +5,7 @@ from flask_admin import expose, AdminIndexView, expose
 import sqlalchemy as sa #import Table, Column, Integer, String, Metadata, Text
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
+from app.util import update_manager
 
 
 class User(db.Model):
@@ -75,4 +76,4 @@ class CustomAdminIndexView(AdminIndexView):
     @expose('/')
     def index(self):
         # Add the button directly on the admin index page
-        return self.render('admin/index.html', button_url=url_for('execute_function'))
+        return self.render('admin/index.html', button_url=url_for('execute_function'), update_available=update_manager.check_for_updates())

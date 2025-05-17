@@ -6,6 +6,24 @@ from config import repo_folder, repo_url
 from subprocess import run
 from app import scheduler
 
+# Class for managing global update variable
+class UpdateManager:
+    def __init__(self):
+        self.update_available = True
+
+    def check_for_updates(self):
+        # Check if the update is available
+        return self.update_available
+
+    def enable_update(self):
+        # Enable the update
+        self.update_available = True
+        
+    def disable_update(self):
+        # Disable the update
+        self.update_available = False
+
+update_manager = UpdateManager()
 
 def clone_repo(url, dest_folder):
     """Cloning github repository function
@@ -52,6 +70,7 @@ def check_and_clone():
             if local_commit != remote_commit:
                 print(f"Changes detected! Cloning the repo...")
                 clone_repo(repo_url, repo_folder)
+                update_manager.enable_update()
             else:
                 print("No new changes detected.")
         except Exception as e:

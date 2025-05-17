@@ -1,5 +1,8 @@
-* auto pull -> Update? -> notification! by email/slack?
+* auto pull OK -> Update? -> notification! by email/slack?
+* When update available -> define starting column standards -> only connection between routine and routes
 * define standards columns 
+
+
 
 - load standaarden
 - load domains

@@ -6,4 +6,42 @@
         </form>
         {{ super() }}
     </div>
+
+    <div class="container">
+        <h2>Welcome to the Admin Dashboard</h2>
+    </div>
+    
+    <!-- Bootstrap 3 Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel">
+      <div class="modal-dialog" role="document">
+        <form method="POST" action="{{ url_for('handle_update') }}">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="updateModalLabel">Internal Update Available</h4>
+            </div>
+            <div class="modal-body">
+              <p>An SCF update is available. Please enter required info:</p>
+              <div class="form-group">
+                <label for="commentInput">Standard start culumn</label>
+                <input type="text" class="form-control" id="commentInput" name="comment" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+{% endblock %}    
+
+{% block tail %}
+  {{ super() }}
+  {% if update_available %}
+  <script>
+    $(function () {
+      $('#updateModal').modal('show');
+    });
+  </script>
+  {% endif %}
 {% endblock %}
