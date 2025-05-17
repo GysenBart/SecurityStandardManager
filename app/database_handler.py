@@ -4,6 +4,7 @@ import pandas as pd
 from config import excel_path
 from app import db, app
 from app.models import SecurityDomains, SecurityStandards, Clausule, DomainStandardClausule #, SecurityControls
+from app.routes import start_column
 
 
 
