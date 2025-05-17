@@ -15,8 +15,8 @@ def home():
     return redirect(url_for('admin.index'))
 
 # Flask route for the button action
-@app.route('/execute_function', methods=['POST'])
-def execute_function():
+@app.route('/update_standards', methods=['POST'])
+def update_standards():
     # Logic to execute when the button is pressed
     check_and_clone()
     print("Function executed!")

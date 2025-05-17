@@ -1,5 +1,6 @@
 * auto pull OK -> Update? -> notification! by email/slack?
 * When update available -> define starting column standards -> only connection between routine and routes
+* Update? -> create a new version tab
 * define standards columns 
 
 

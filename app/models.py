@@ -76,4 +76,5 @@ class CustomAdminIndexView(AdminIndexView):
     @expose('/')
     def index(self):
         # Add the button directly on the admin index page
-        return self.render('admin/index.html', button_url=url_for('execute_function'), update_available=update_manager.check_for_updates())
+        return self.render('admin/index.html', update_available=update_manager.check_for_updates())
+        #return self.render('admin/index.html', button_url=url_for('update_standards'), update_available=update_manager.check_for_updates())
