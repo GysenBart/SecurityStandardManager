@@ -9,7 +9,7 @@ from app import scheduler
 # Class for managing global update variable
 class UpdateManager:
     def __init__(self):
-        self.update_available = True
+        self.update_available = False
 
     def check_for_updates(self):
         # Check if the update is available

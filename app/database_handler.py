@@ -1,12 +1,27 @@
 from datetime import datetime
 import fnmatch
 import pandas as pd
+import os
+import glob
 from config import excel_path
 from app import db, app
 from app.models import SecurityDomains, SecurityStandards, Clausule, DomainStandardClausule #, SecurityControls
-from app.routes import start_column
+#from app.routes import start_column
 
+def get_latest_file():
+    """Get the latest Excel file matching the pattern."""
+    files = glob.glob(excel_path)
 
+    if not files:
+        raise FileNotFoundError("No SCF file found.")
+
+    # Sort by last modified time (newest last)
+    files.sort(key=os.path.getmtime, reverse=True)
+
+    latest_excel = files[0]
+    print(f"Using latest SCF file: {latest_excel}")
+    
+    return latest_excel
 
 def find_matching_sheet(file_path, pattern):
     # Load the Excel file
@@ -22,16 +37,19 @@ def find_matching_sheet(file_path, pattern):
     
     raise ValueError(f"No sheet matching the pattern '{pattern}' found in the Excel file.")
 
-def read_scf_tab(path):
+def read_scf_tab():
+    # Get the latest file path
+    path = get_latest_file()
+    # Find the first sheet that matches the pattern "SCF 20*"
     matching_sheet = find_matching_sheet(path, pattern="SCF 20*")
     
     df = pd.read_excel(path, sheet_name=matching_sheet)
     
-    return df
+    return df, matching_sheet
 
 def proces_excel_data(path):
     
-    df = read_scf_tab(path)
+    df, version = read_scf_tab(path)
     
     with app.app_context():
         for index, row in df.iterrows():

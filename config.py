@@ -6,7 +6,7 @@ repo_folder = os.path.join(basedir, "SCF_files")
 
 repo_url = "https://github.com/securecontrolsframework/securecontrolsframework.git"
 
-excel_path = "SCF_files/Secure Controls Framework (SCF) - 2024.4.xlsx"
+excel_path = "SCF_files/Secure Controls Framework (SCF) - *.xlsx"
 
 debug_enabled = True
 host = "0.0.0.0"
