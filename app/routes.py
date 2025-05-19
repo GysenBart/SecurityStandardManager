@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, send_from_directory, flash, redirect, url_for, request
 from app.util import check_and_clone, update_manager
+from app.database_handler import proces_excel_data
 # Basic route
 #@app.route('/')
 #def index():
@@ -28,6 +29,10 @@ def handle_update():
     update_manager.disable_update()
     start_column = request.form['comment']
     print("Update comment:", start_column)
+    
+    # When the start column for the standards is set, we can process the excel data
+    #proces_excel_data(start_column)
+    
     # Process the input as needed...
     flash("Update info submitted!", "success")
     return redirect(url_for('admin.index'))

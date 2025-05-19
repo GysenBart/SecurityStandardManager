@@ -20,7 +20,7 @@ class SecurityDomains(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(100))
     description = db.Column(db.Text)
-    version = db.Column(db.String(50))
+    version = db.Column(db.String(20))
     
     def __str__(self):
         return self.name
@@ -29,7 +29,7 @@ class SecurityControls(db.Model):
     id = db.Column(db.String(15), primary_key=True)
     name = db.Column(db.String(50))
     description = db.Column(db.Text)
-    version = db.Column(db.String(50))
+    version = db.Column(db.String(20))
     
     def __str__(self):
         return self.name
@@ -38,7 +38,7 @@ class SecurityStandards(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(50))
     description = db.Column(db.Text)
-    version = db.Column(db.String(50))
+    version = db.Column(db.String(20))
     
     def __str__(self):
         return self.name
@@ -50,7 +50,7 @@ class Clausule(db.Model):
     description = db.Column(db.Text) # filled by user
     created_at = db.Column(db.DateTime, default=datetime.now)
     standard_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityStandards.id, name='fk_DomainStandardClausule_securityStandards_id'))
-    version = db.Column(db.String(50))
+    version = db.Column(db.String(20))
     
     def __str__(self):
         return f"{self.number} - {self.description[:50]}..."
@@ -65,7 +65,7 @@ class DomainStandardClausule(db.Model):
     control_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityControls.id, name='fk_DomainStandardClausule_securityControls_id'))
     standard_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(SecurityStandards.id, name='fk_DomainStandardClausule_securityStandards_id'))
     clausule_id = db.Column(UUID(as_uuid=True), sa.ForeignKey(Clausule.id, name='fk_DomainStandardClausule_clausule_id'))
-    version = db.Column(db.String(10))
+    version = db.Column(db.String(20))
     #start_date = db.Column(db.DateTime, default=datetime.now)
     #end_date = db.Column(db.DateTime)
     

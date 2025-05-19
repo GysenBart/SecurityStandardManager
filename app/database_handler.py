@@ -6,7 +6,8 @@ import glob
 from config import excel_path
 from app import db, app
 from app.models import SecurityDomains, SecurityStandards, Clausule, DomainStandardClausule #, SecurityControls
-#from app.routes import start_column
+from openpyxl.utils import column_index_from_string
+from openpyxl import load_workbook
 
 def get_latest_file():
     """Get the latest Excel file matching the pattern."""
@@ -24,7 +25,7 @@ def get_latest_file():
     return latest_excel
 
 def find_matching_sheet(file_path, pattern):
-    # Load the Excel file
+    """Find the first sheet in the Excel file that matches the given pattern."""
     excel_file = pd.ExcelFile(file_path)
     
     # Get all sheet names
@@ -38,6 +39,7 @@ def find_matching_sheet(file_path, pattern):
     raise ValueError(f"No sheet matching the pattern '{pattern}' found in the Excel file.")
 
 def read_scf_tab():
+    """Read the SCF tab from the latest Excel file."""
     # Get the latest file path
     path = get_latest_file()
     # Find the first sheet that matches the pattern "SCF 20*"
@@ -45,13 +47,51 @@ def read_scf_tab():
     
     df = pd.read_excel(path, sheet_name=matching_sheet)
     
-    return df, matching_sheet
+    # Read header comments using openpyxl
+    wb = load_workbook(path, data_only=True)
+    ws = wb[matching_sheet]
 
-def proces_excel_data(path):
+    header_comments = {
+        cell.value: cell.comment.text if cell.comment else None
+        for cell in ws[1]  # Header row
+        if cell.value is not None
+    }
     
-    df, version = read_scf_tab(path)
+    return df, matching_sheet, header_comments
+
+
+def proces_excel_data(start_col):
+    
+    start_col = "AB" # Remove after testing
+    
+    # Convert to zero-based index (excel AB = index 27)
+    start_col_index = column_index_from_string(start_col) -1
+    
+    df, latest_version, header_comments = read_scf_tab()
+    
+    # Get the headers for the standards
+    standards_headers = df.columns[start_col_index:]
     
     with app.app_context():
+        # Load standards
+        for col in standards_headers: 
+            # Create or get standard
+            standard = SecurityStandards.query.filter_by(name=col).first()
+            if not standard:
+                # Get comment if any
+                comment = header_comments.get(col, None)
+                standard = SecurityStandards(name=col, version=latest_version, description=comment)
+                db.session.add(standard)
+        
+        # Load domains & controls???       
+        for index, row in df.iterrows():
+            # Create or get domain
+            domain = SecurityDomains.query.filter_by(name=row['SCF Domain']).first()
+            if not domain:
+                domain = SecurityDomains(name=row['SCF Domain'], version=latest_version)
+                db.session.add(domain)
+        
+        """
         for index, row in df.iterrows():
             # Create or get domain
             domain = SecurityDomains.query.filter_by(name=row['SCF Domain']).first()
@@ -107,5 +147,5 @@ def proces_excel_data(path):
                                     clausule=clausule
                                 )
                                 db.session.add(new_rel)
-        
+        """
         db.session.commit()
