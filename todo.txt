@@ -5,8 +5,9 @@
 
 
 
-- load standaarden
-- load domains
+- load standaarden -> comments also? -> DONE
+- load domains -> DONE
+- load controls & descriptions -> DONE
 - loop through rows
     - get meta data
     - insert into database

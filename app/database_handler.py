@@ -5,7 +5,7 @@ import os
 import glob
 from config import excel_path
 from app import db, app
-from app.models import SecurityDomains, SecurityStandards, Clausule, DomainStandardClausule #, SecurityControls
+from app.models import SecurityDomains, SecurityStandards, Clausule, DomainStandardClausule, SecurityControls
 from openpyxl.utils import column_index_from_string
 from openpyxl import load_workbook
 
@@ -83,13 +83,21 @@ def proces_excel_data(start_col):
                 standard = SecurityStandards(name=col, version=latest_version, description=comment)
                 db.session.add(standard)
         
-        # Load domains & controls???       
+        # Load domains     
         for index, row in df.iterrows():
             # Create or get domain
             domain = SecurityDomains.query.filter_by(name=row['SCF Domain']).first()
             if not domain:
                 domain = SecurityDomains(name=row['SCF Domain'], version=latest_version)
                 db.session.add(domain)
+        
+            # Create or get control & description
+            control = SecurityControls.query.filter_by(name=row['SCF Control']).first()
+            if not control:
+                control = SecurityControls(name=row['SCF Control'], version=latest_version, description=row["Secure Controls Framework (SCF)\nControl Description"])
+                db.session.add(control)
+                
+        # Load controls
         
         """
         for index, row in df.iterrows():

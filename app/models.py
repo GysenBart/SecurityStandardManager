@@ -26,7 +26,7 @@ class SecurityDomains(db.Model):
         return self.name
     
 class SecurityControls(db.Model):
-    id = db.Column(db.String(15), primary_key=True)
+    id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String(50))
     description = db.Column(db.Text)
     version = db.Column(db.String(20))
